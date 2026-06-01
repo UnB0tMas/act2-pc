@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="sidebar"
+       id="appSidebar"
+       class="fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] w-72 -translate-x-full border-r border-slate-200 bg-white transition-transform duration-300 lg:translate-x-0">
+    <div class="flex h-full flex-col overflow-y-auto px-4 py-5">
+        <div class="mb-5 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 p-5 text-white shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15">
+                    <i class="fa-solid fa-database text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold">CASTILLONV2</p>
+                    <p class="text-xs text-blue-100">Base de datos SQL Server</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="space-y-1">
+            <a th:href="@{/dashboard}" data-path="/dashboard" class="sidebar-link">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <p class="sidebar-section">Gestión</p>
+
+            <a th:href="@{/productos}" data-path="/productos" class="sidebar-link">
+                <i class="fa-solid fa-box-open"></i>
+                <span>Productos</span>
+            </a>
+
+            <a th:href="@{/clientes}" data-path="/clientes" class="sidebar-link">
+                <i class="fa-solid fa-users"></i>
+                <span>Clientes</span>
+            </a>
+
+            <a th:href="@{/empleados}" data-path="/empleados" class="sidebar-link">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Empleados</span>
+            </a>
+
+            <p class="sidebar-section">Operaciones</p>
+
+            <a th:href="@{/ventas}" data-path="/ventas" class="sidebar-link">
+                <i class="fa-solid fa-cash-register"></i>
+                <span>Ventas</span>
+            </a>
+
+            <a th:href="@{/pedidos}" data-path="/pedidos" class="sidebar-link">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Pedidos</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-6">
+            <div class="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-100 text-blue-700">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-900">Sesión protegida</p>
+                <p class="mt-1 text-xs leading-5 text-slate-500">
+                    Login conectado a la tabla USUARIO de CASTILLONV2.
+                </p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div id="sidebarBackdrop"
+     class="fixed inset-0 z-20 hidden bg-slate-900/40 backdrop-blur-sm lg:hidden"></div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+ACT-2/
+├── .idea/
+├── .mvn/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── upsjb/
+│   │   │           └── act2/
+│   │   │               ├── Act2Application.java
+│   │   │               │
+│   │   │               ├── config/
+│   │   │               │   ├── SecurityConfig.java
+│   │   │               │   └── WebMvcConfig.java
+│   │   │               │
+│   │   │               ├── security/
+│   │   │               │   ├── CastillonUserDetails.java
+│   │   │               │   ├── CastillonUserDetailsService.java
+│   │   │               │   └── TrimPlainTextPasswordEncoder.java
+│   │   │               │
+│   │   │               ├── model/
+│   │   │               │   ├── Area.java
+│   │   │               │   ├── Cargo.java
+│   │   │               │   ├── Categoria.java
+│   │   │               │   ├── Cliente.java
+│   │   │               │   ├── Contrato.java
+│   │   │               │   ├── DashboardResumen.java
+│   │   │               │   ├── Departamento.java
+│   │   │               │   ├── DetallePedido.java
+│   │   │               │   ├── Distrito.java
+│   │   │               │   ├── Empleado.java
+│   │   │               │   ├── Empresa.java
+│   │   │               │   ├── Mesa.java
+│   │   │               │   ├── MetodoPago.java
+│   │   │               │   ├── Pedido.java
+│   │   │               │   ├── Persona.java
+│   │   │               │   ├── Producto.java
+│   │   │               │   ├── Provincia.java
+│   │   │               │   ├── TipoUsuario.java
+│   │   │               │   ├── Usuario.java
+│   │   │               │   └── Venta.java
+│   │   │               │
+│   │   │               ├── repository/
+│   │   │               │   ├── AreaRepository.java
+│   │   │               │   ├── CargoRepository.java
+│   │   │               │   ├── CategoriaRepository.java
+│   │   │               │   ├── ClienteRepository.java
+│   │   │               │   ├── ContratoRepository.java
+│   │   │               │   ├── DashboardRepository.java
+│   │   │               │   ├── EmpleadoRepository.java
+│   │   │               │   ├── EmpresaRepository.java
+│   │   │               │   ├── MesaRepository.java
+│   │   │               │   ├── MetodoPagoRepository.java
+│   │   │               │   ├── PedidoRepository.java
+│   │   │               │   ├── PersonaRepository.java
+│   │   │               │   ├── ProductoRepository.java
+│   │   │               │   ├── UbigeoRepository.java
+│   │   │               │   ├── UsuarioRepository.java
+│   │   │               │   └── VentaRepository.java
+│   │   │               │
+│   │   │               ├── service/
+│   │   │               │   ├── AuthService.java
+│   │   │               │   ├── CatalogoService.java
+│   │   │               │   ├── ClienteService.java
+│   │   │               │   ├── DashboardService.java
+│   │   │               │   ├── EmpleadoService.java
+│   │   │               │   ├── PedidoService.java
+│   │   │               │   ├── ProductoService.java
+│   │   │               │   ├── UbigeoService.java
+│   │   │               │   └── VentaService.java
+│   │   │               │
+│   │   │               ├── controller/
+│   │   │               │   ├── CatalogoController.java
+│   │   │               │   ├── ClienteController.java
+│   │   │               │   ├── DashboardController.java
+│   │   │               │   ├── EmpleadoController.java
+│   │   │               │   ├── HomeController.java
+│   │   │               │   ├── LoginController.java
+│   │   │               │   ├── PedidoController.java
+│   │   │               │   ├── ProductoController.java
+│   │   │               │   └── VentaController.java
+│   │   │               │
+│   │   │               └── util/
+│   │   │                   ├── EstadoUtil.java
+│   │   │                   ├── PageResult.java
+│   │   │                   ├── SqlPagination.java
+│   │   │                   └── TextUtil.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       │
+│   │       ├── templates/
+│   │       │   ├── login.html
+│   │       │   │
+│   │       │   ├── layout/
+│   │       │   │   ├── base.html
+│   │       │   │   ├── navbar.html
+│   │       │   │   ├── pagination.html
+│   │       │   │   └── sidebar.html
+│   │       │   │
+│   │       │   ├── dashboard/
+│   │       │   │   └── index.html
+│   │       │   │
+│   │       │   ├── productos/
+│   │       │   │   ├── list.html
+│   │       │   │   ├── form.html
+│   │       │   │   └── detail.html
+│   │       │   │
+│   │       │   ├── clientes/
+│   │       │   │   ├── list.html
+│   │       │   │   ├── form-persona.html
+│   │       │   │   ├── form-empresa.html
+│   │       │   │   └── detail.html
+│   │       │   │
+│   │       │   ├── empleados/
+│   │       │   │   ├── list.html
+│   │       │   │   ├── form.html
+│   │       │   │   └── detail.html
+│   │       │   │
+│   │       │   ├── ventas/
+│   │       │   │   ├── list.html
+│   │       │   │   └── detail.html
+│   │       │   │
+│   │       │   ├── pedidos/
+│   │       │   │   ├── list.html
+│   │       │   │   └── detail.html
+│   │       │   │
+│   │       │   └── error/
+│   │       │       ├── 403.html
+│   │       │       └── general.html
+│   │       │
+│   │       └── static/
+│   │           ├── css/
+│   │           │   └── app.css
+│   │           ├── js/
+│   │           │   └── app.js
+│   │           └── img/
+│   │               └── logo.png
+│   │
+│   └── test/
+│       └── java/
+│           └── com/
+│               └── upsjb/
+│                   └── act2/
+│                       └── Act2ApplicationTests.java
+│
+├── .gitattributes
+├── .gitignore
+├── HELP.md
+├── mvnw
+├── mvnw.cmd
+└── pom.xml

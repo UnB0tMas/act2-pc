@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Productos')}"></head>
+<body class="bg-slate-100 font-inter text-slate-800">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<div th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<main class="min-h-screen pt-16 lg:pl-72">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+                <p class="text-sm font-bold uppercase tracking-wider text-blue-600">
+                    <i class="fa-solid fa-box-open mr-2"></i>
+                    Catálogo
+                </p>
+                <h1 class="mt-2 text-3xl font-extrabold text-slate-900">Productos</h1>
+                <p class="mt-2 text-slate-500">Consulta, filtra y administra productos de CASTILLONV2.</p>
+            </div>
+
+            <a th:href="@{/productos/nuevo}" class="btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Nuevo producto
+            </a>
+        </div>
+
+        <div th:replace="~{layout/base :: alerts}"></div>
+
+        <section class="panel mb-6">
+            <form th:action="@{/productos}" method="get" class="grid gap-4 lg:grid-cols-5">
+                <div class="lg:col-span-2">
+                    <label class="form-label">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Buscar
+                    </label>
+                    <input type="text" name="texto" th:value="${texto}" class="form-input"
+                           placeholder="Producto o marca">
+                </div>
+
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-tags"></i>
+                        Categoría
+                    </label>
+                    <select name="idCategoria" class="form-input">
+                        <option value="">Todas</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.idCategoria}"
+                                th:text="${cat.nomCategoria}"
+                                th:selected="${idCategoria != null and idCategoria == cat.idCategoria}">
+                            Categoría
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-toggle-on"></i>
+                        Estado
+                    </label>
+                    <select name="estado" class="form-input">
+                        <option value="">Todos</option>
+                        <option value="1" th:selected="${estado == '1'}">Activo</option>
+                        <option value="0" th:selected="${estado == '0'}">Inactivo</option>
+                    </select>
+                </div>
+
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="btn-primary w-full">
+                        <i class="fa-solid fa-filter"></i>
+                        Filtrar
+                    </button>
+                    <a th:href="@{/productos}" class="btn-light">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="mb-5 flex items-center justify-between">
+                <div>
+                    <h2 class="panel-title">Listado de productos</h2>
+                    <p class="text-sm text-slate-500">
+                        Total:
+                        <span class="font-bold text-slate-900" th:text="${pageResult.totalElements}">0</span>
+                    </p>
+                </div>
+            </div>
+
+            <div th:if="${pageResult.empty}"
+                 th:replace="~{layout/base :: emptyState('fa-solid fa-box-open', 'Sin productos', 'No se encontraron productos con los filtros aplicados.')}"></div>
+
+            <div th:if="${pageResult.hasContent()}" class="overflow-x-auto">
+                <table class="app-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th class="text-right">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="producto : ${pageResult.content}">
+                        <td class="font-bold" th:text="${producto.idProducto}">1</td>
+                        <td>
+                            <p class="font-bold text-slate-900" th:text="${producto.nomProducto}">Producto</p>
+                            <p class="max-w-md truncate text-xs text-slate-500" th:text="${producto.descripcion}">Descripción</p>
+                        </td>
+                        <td th:text="${producto.nomCategoria ?: 'Sin categoría'}">Categoría</td>
+                        <td th:text="${producto.marca ?: 'Sin marca'}">Marca</td>
+                        <td class="font-bold text-slate-900"
+                            th:text="${'S/ ' + #numbers.formatDecimal(producto.precio ?: 0, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
+                        <td>
+                            <span class="status-pill"
+                                  th:text="${T(com.upsjb.act2.util.EstadoUtil).etiqueta(producto.estado)}">Activo</span>
+                        </td>
+                        <td>
+                            <div class="flex justify-end gap-2">
+                                <a th:href="@{/productos/{id}(id=${producto.idProducto})}" class="icon-btn" title="Ver">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <a th:href="@{/productos/{id}/editar(id=${producto.idProducto})}" class="icon-btn" title="Editar">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <form th:action="@{/productos/{id}/estado(id=${producto.idProducto})}" method="post">
+                                    <input type="hidden" name="estado"
+                                           th:value="${T(com.upsjb.act2.util.EstadoUtil).esActivo(producto.estado) ? '0' : '1'}">
+                                    <button type="submit"
+                                            class="icon-btn js-confirm"
+                                            th:attr="data-confirm=${T(com.upsjb.act2.util.EstadoUtil).esActivo(producto.estado) ? '¿Inactivar producto?' : '¿Activar producto?'}"
+                                            title="Cambiar estado">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:replace="~{layout/pagination :: pagination(${pageResult})}"></div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{layout/base :: scripts}"></div>
+</body>
+</html>

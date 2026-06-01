@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="pagination(pageResult)">
+    <div th:if="${pageResult != null and pageResult.totalPages > 1}"
+         class="mt-6 flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div class="text-sm text-slate-500">
+            Mostrando
+            <span class="font-bold text-slate-900" th:text="${pageResult.fromElement}">1</span>
+            a
+            <span class="font-bold text-slate-900" th:text="${pageResult.toElement}">10</span>
+            de
+            <span class="font-bold text-slate-900" th:text="${pageResult.totalElements}">100</span>
+            registros
+        </div>
+
+        <nav class="flex items-center gap-2"
+             th:with="start=${pageResult.page > 2 ? pageResult.page - 2 : 0},
+                      end=${pageResult.totalPages - 1 < start + 4 ? pageResult.totalPages - 1 : start + 4}">
+            <a href="#"
+               class="js-page-link pagination-btn"
+               th:classappend="${!pageResult.hasPrevious()} ? ' pointer-events-none opacity-40'"
+               th:attr="data-page=${pageResult.previousPage}">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+
+            <a href="#"
+               th:each="i : ${#numbers.sequence(start, end)}"
+               th:text="${i + 1}"
+               th:attr="data-page=${i}"
+               class="js-page-link pagination-btn"
+               th:classappend="${i == pageResult.page} ? ' pagination-active'">
+                1
+            </a>
+
+            <a href="#"
+               class="js-page-link pagination-btn"
+               th:classappend="${!pageResult.hasNext()} ? ' pointer-events-none opacity-40'"
+               th:attr="data-page=${pageResult.nextPage}">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

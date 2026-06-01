@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head(${producto.idProducto == null ? 'Nuevo producto' : 'Editar producto'})}"></head>
+<body class="bg-slate-100 font-inter text-slate-800">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<div th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<main class="min-h-screen pt-16 lg:pl-72">
+    <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <a th:href="@{/productos}" class="mb-4 inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700">
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver a productos
+            </a>
+            <h1 class="text-3xl font-extrabold text-slate-900"
+                th:text="${producto.idProducto == null ? 'Nuevo producto' : 'Editar producto'}">
+                Producto
+            </h1>
+            <p class="mt-2 text-slate-500">Completa la información del producto. La categoría se selecciona por nombre.</p>
+        </div>
+
+        <div th:replace="~{layout/base :: alerts}"></div>
+
+        <form th:object="${producto}"
+              th:action="${producto.idProducto == null} ? @{/productos} : @{/productos/{id}(id=${producto.idProducto})}"
+              method="post"
+              class="panel space-y-6">
+            <input type="hidden" th:field="*{idProducto}">
+
+            <div class="grid gap-5 md:grid-cols-2">
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-box"></i>
+                        Nombre del producto
+                    </label>
+                    <input type="text" th:field="*{nomProducto}" class="form-input" required maxlength="100"
+                           placeholder="Ejemplo: Lomo saltado">
+                </div>
+
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-tags"></i>
+                        Categoría
+                    </label>
+                    <select th:field="*{idCategoria}" class="form-input" required>
+                        <option value="">Seleccione una categoría</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.idCategoria}"
+                                th:text="${cat.nomCategoria}">
+                            Categoría
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-industry"></i>
+                        Marca
+                    </label>
+                    <input type="text" th:field="*{marca}" class="form-input" maxlength="50"
+                           placeholder="Marca o referencia">
+                </div>
+
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        Precio
+                    </label>
+                    <input type="number" th:field="*{precio}" class="form-input" min="0" step="0.01" required
+                           placeholder="0.00">
+                </div>
+
+                <div>
+                    <label class="form-label">
+                        <i class="fa-solid fa-toggle-on"></i>
+                        Estado
+                    </label>
+                    <select th:field="*{estado}" class="form-input">
+                        <option value="1">Activo</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="form-label">
+                    <i class="fa-solid fa-align-left"></i>
+                    Descripción
+                </label>
+                <textarea th:field="*{descripcion}" class="form-input min-h-32" maxlength="100"
+                          placeholder="Descripción breve del producto"></textarea>
+            </div>
+
+            <div class="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
+                <a th:href="@{/productos}" class="btn-light justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancelar
+                </a>
+                <button type="submit" class="btn-primary justify-center">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar producto
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{layout/base :: scripts}"></div>
+</body>
+</html>

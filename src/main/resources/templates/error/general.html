@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Error')}"></head>
+<body class="min-h-screen bg-slate-100 font-inter">
+<main class="flex min-h-screen items-center justify-center px-4 py-10">
+    <section class="max-w-xl rounded-[2rem] border border-slate-200 bg-white p-10 text-center shadow-soft">
+        <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-100 text-amber-600">
+            <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
+        </div>
+
+        <p class="text-sm font-extrabold uppercase tracking-widest text-amber-600">Error</p>
+        <h1 class="mt-3 text-3xl font-extrabold text-slate-900">Ocurrió un problema</h1>
+        <p class="mt-4 text-slate-500">
+            No se pudo completar la operación solicitada.
+        </p>
+
+        <div class="mt-6 rounded-2xl bg-slate-50 p-4 text-left text-sm text-slate-600" th:if="${message}">
+            <p class="font-bold text-slate-900">Detalle:</p>
+            <p th:text="${message}">Mensaje de error</p>
+        </div>
+
+        <div class="mt-8 flex justify-center gap-3">
+            <a th:href="@{/dashboard}" class="btn-primary">
+                <i class="fa-solid fa-gauge-high"></i>
+                Ir al dashboard
+            </a>
+            <button type="button" onclick="history.back()" class="btn-light">
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver
+            </button>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout/base :: scripts}"></div>
+</body>
+</html>

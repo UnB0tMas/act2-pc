@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Detalle producto')}"></head>
+<body class="bg-slate-100 font-inter text-slate-800">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<div th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<main class="min-h-screen pt-16 lg:pl-72">
+    <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+                <a th:href="@{/productos}" class="mb-4 inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver
+                </a>
+                <h1 class="text-3xl font-extrabold text-slate-900" th:text="${producto.nomProducto}">Producto</h1>
+                <p class="mt-2 text-slate-500">Detalle completo del producto seleccionado.</p>
+            </div>
+
+            <a th:href="@{/productos/{id}/editar(id=${producto.idProducto})}" class="btn-primary">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Editar
+            </a>
+        </div>
+
+        <div th:replace="~{layout/base :: alerts}"></div>
+
+        <section class="grid gap-6 lg:grid-cols-3">
+            <div class="panel lg:col-span-2">
+                <div class="mb-6 flex items-start gap-4">
+                    <div class="flex h-16 w-16 items-center justify-center rounded-3xl bg-blue-100 text-blue-700">
+                        <i class="fa-solid fa-box-open text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-wide text-slate-500">Producto</p>
+                        <h2 class="text-2xl font-extrabold text-slate-900" th:text="${producto.nomProducto}">Producto</h2>
+                    </div>
+                </div>
+
+                <dl class="grid gap-5 md:grid-cols-2">
+                    <div class="info-box">
+                        <dt>ID</dt>
+                        <dd th:text="${producto.idProducto}">1</dd>
+                    </div>
+                    <div class="info-box">
+                        <dt>Categoría</dt>
+                        <dd th:text="${producto.nomCategoria ?: 'Sin categoría'}">Categoría</dd>
+                    </div>
+                    <div class="info-box">
+                        <dt>Marca</dt>
+                        <dd th:text="${producto.marca ?: 'Sin marca'}">Marca</dd>
+                    </div>
+                    <div class="info-box">
+                        <dt>Precio</dt>
+                        <dd th:text="${'S/ ' + #numbers.formatDecimal(producto.precio ?: 0, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</dd>
+                    </div>
+                    <div class="info-box md:col-span-2">
+                        <dt>Descripción</dt>
+                        <dd th:text="${producto.descripcion ?: 'Sin descripción'}">Descripción</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="panel">
+                <h3 class="mb-4 text-lg font-extrabold text-slate-900">
+                    <i class="fa-solid fa-circle-info mr-2 text-blue-600"></i>
+                    Estado
+                </h3>
+
+                <span class="status-pill text-base"
+                      th:text="${T(com.upsjb.act2.util.EstadoUtil).etiqueta(producto.estado)}">Activo</span>
+
+                <form th:action="@{/productos/{id}/estado(id=${producto.idProducto})}" method="post" class="mt-6">
+                    <input type="hidden" name="estado"
+                           th:value="${T(com.upsjb.act2.util.EstadoUtil).esActivo(producto.estado) ? '0' : '1'}">
+                    <button type="submit" class="btn-light w-full justify-center js-confirm"
+                            th:attr="data-confirm=${T(com.upsjb.act2.util.EstadoUtil).esActivo(producto.estado) ? '¿Inactivar producto?' : '¿Activar producto?'}">
+                        <i class="fa-solid fa-power-off"></i>
+                        Cambiar estado
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{layout/base :: scripts}"></div>
+</body>
+</html>

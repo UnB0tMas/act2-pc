@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Iniciar sesión')}"></head>
+<body class="min-h-screen bg-slate-950 font-inter">
+<div class="relative min-h-screen overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.35),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(99,102,241,0.25),_transparent_35%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,_rgba(255,255,255,0.04)_1px,_transparent_1px),linear-gradient(to_bottom,_rgba(255,255,255,0.04)_1px,_transparent_1px)] bg-[size:48px_48px]"></div>
+
+    <main class="relative z-10 flex min-h-screen items-center justify-center px-4 py-10">
+        <div class="grid w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-2xl backdrop-blur-2xl lg:grid-cols-2">
+
+            <section class="hidden bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+                <div>
+                    <div class="mb-10 flex items-center gap-3">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 shadow-lg">
+                            <i class="fa-solid fa-utensils text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xl font-extrabold">CASTILLONV2</p>
+                        </div>
+                    </div>
+
+                    <h1 class="max-w-md text-4xl font-extrabold leading-tight">
+                        Acceso seguro para la gestión de tu negocio.
+                    </h1>
+
+                    <p class="mt-5 max-w-md text-base leading-7 text-blue-100">
+                        Administra tus operaciones de forma ordenada, rápida y confiable desde una plataforma centralizada.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="rounded-2xl bg-white/10 p-4 backdrop-blur">
+                        <i class="fa-solid fa-shield-halved mb-3 text-blue-100"></i>
+                        <p class="text-sm font-bold">Seguridad</p>
+                    </div>
+
+                    <div class="rounded-2xl bg-white/10 p-4 backdrop-blur">
+                        <i class="fa-solid fa-chart-line mb-3 text-blue-100"></i>
+                        <p class="text-sm font-bold">Control</p>
+                    </div>
+
+                    <div class="rounded-2xl bg-white/10 p-4 backdrop-blur">
+                        <i class="fa-solid fa-clipboard-check mb-3 text-blue-100"></i>
+                        <p class="text-sm font-bold">Gestión</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 sm:p-10">
+                <div class="mx-auto max-w-md">
+
+                    <div class="mb-8 text-center lg:text-left">
+                        <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-blue-600 text-white shadow-lg lg:mx-0">
+                            <i class="fa-solid fa-lock text-2xl"></i>
+                        </div>
+
+                        <h2 class="text-3xl font-extrabold text-slate-900">
+                            Iniciar sesión
+                        </h2>
+
+                        <p class="mt-2 text-sm text-slate-500">
+                            Ingresa tus credenciales para continuar.
+                        </p>
+                    </div>
+
+                    <div th:if="${param.error}"
+                         class="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        <i class="fa-solid fa-circle-xmark mr-2"></i>
+                        Usuario o clave incorrectos.
+                    </div>
+
+                    <div th:if="${param.logout}"
+                         class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                        <i class="fa-solid fa-circle-check mr-2"></i>
+                        Sesión cerrada correctamente.
+                    </div>
+
+                    <form th:action="@{/login}" method="post" class="space-y-5">
+                        <div>
+                            <label for="username" class="mb-2 block text-sm font-bold text-slate-700">
+                                <i class="fa-solid fa-user mr-2 text-blue-600"></i>
+                                Usuario
+                            </label>
+
+                            <input id="username"
+                                   name="username"
+                                   type="text"
+                                   autocomplete="username"
+                                   required
+                                   autofocus
+                                   class="block w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                   placeholder="Ingresa tu usuario">
+                        </div>
+
+                        <div>
+                            <label for="password" class="mb-2 block text-sm font-bold text-slate-700">
+                                <i class="fa-solid fa-key mr-2 text-blue-600"></i>
+                                Clave
+                            </label>
+
+                            <div class="relative">
+                                <input id="password"
+                                       name="password"
+                                       type="password"
+                                       autocomplete="current-password"
+                                       required
+                                       class="block w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-12 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                       placeholder="Ingresa tu clave">
+
+                                <button type="button"
+                                        class="js-toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700 focus:outline-none"
+                                        data-target="password"
+                                        aria-label="Mostrar u ocultar clave">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                                class="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Ingresar
+                        </button>
+                    </form>
+
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<div th:replace="~{layout/base :: scripts}"></div>
+</body>
+</html>
