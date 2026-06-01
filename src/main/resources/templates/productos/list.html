@@ -32,7 +32,10 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         Buscar
                     </label>
-                    <input type="text" name="texto" th:value="${texto}" class="form-input"
+                    <input type="text"
+                           name="texto"
+                           th:value="${texto}"
+                           class="form-input"
                            placeholder="Producto o marca">
                 </div>
 
@@ -59,8 +62,8 @@
                     </label>
                     <select name="estado" class="form-input">
                         <option value="">Todos</option>
-                        <option value="1" th:selected="${estado == '1'}">Activo</option>
-                        <option value="0" th:selected="${estado == '0'}">Inactivo</option>
+                        <option value="1" th:selected="${estado == '1' or estado == 'A'}">Activo</option>
+                        <option value="0" th:selected="${estado == '0' or estado == 'I'}">Inactivo</option>
                     </select>
                 </div>
 
@@ -103,35 +106,60 @@
                         <th class="text-right">Acciones</th>
                     </tr>
                     </thead>
+
                     <tbody>
                     <tr th:each="producto : ${pageResult.content}">
                         <td class="font-bold" th:text="${producto.idProducto}">1</td>
+
                         <td>
-                            <p class="font-bold text-slate-900" th:text="${producto.nomProducto}">Producto</p>
-                            <p class="max-w-md truncate text-xs text-slate-500" th:text="${producto.descripcion}">Descripción</p>
+                            <p class="font-bold text-slate-900"
+                               th:text="${producto.nomProducto}">
+                                Producto
+                            </p>
+                            <p class="max-w-md truncate text-xs text-slate-500"
+                               th:text="${producto.descripcion ?: 'Sin descripción'}">
+                                Descripción
+                            </p>
                         </td>
+
                         <td th:text="${producto.nomCategoria ?: 'Sin categoría'}">Categoría</td>
+
                         <td th:text="${producto.marca ?: 'Sin marca'}">Marca</td>
+
                         <td class="font-bold text-slate-900"
-                            th:text="${'S/ ' + #numbers.formatDecimal(producto.precio ?: 0, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
+                            th:text="${'S/ ' + #numbers.formatDecimal(producto.precio ?: 0, 1, 'COMMA', 2, 'POINT')}">
+                            S/ 0.00
+                        </td>
+
                         <td>
                             <span class="status-pill"
-                                  th:text="${T(com.upsjb.act2.util.EstadoUtil).etiqueta(producto.estado)}">Activo</span>
+                                  th:text="${producto.estado == '1' or producto.estado == 'A' ? 'Activo' : 'Inactivo'}">
+                                Activo
+                            </span>
                         </td>
+
                         <td>
                             <div class="flex justify-end gap-2">
-                                <a th:href="@{/productos/{id}(id=${producto.idProducto})}" class="icon-btn" title="Ver">
+                                <a th:href="@{/productos/{id}(id=${producto.idProducto})}"
+                                   class="icon-btn"
+                                   title="Ver">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a th:href="@{/productos/{id}/editar(id=${producto.idProducto})}" class="icon-btn" title="Editar">
+
+                                <a th:href="@{/productos/{id}/editar(id=${producto.idProducto})}"
+                                   class="icon-btn"
+                                   title="Editar">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
+
                                 <form th:action="@{/productos/{id}/estado(id=${producto.idProducto})}" method="post">
-                                    <input type="hidden" name="estado"
-                                           th:value="${T(com.upsjb.act2.util.EstadoUtil).esActivo(producto.estado) ? '0' : '1'}">
+                                    <input type="hidden"
+                                           name="estado"
+                                           th:value="${producto.estado == '1' or producto.estado == 'A' ? '0' : '1'}">
+
                                     <button type="submit"
                                             class="icon-btn js-confirm"
-                                            th:attr="data-confirm=${T(com.upsjb.act2.util.EstadoUtil).esActivo(producto.estado) ? '¿Inactivar producto?' : '¿Activar producto?'}"
+                                            th:attr="data-confirm=${producto.estado == '1' or producto.estado == 'A' ? '¿Inactivar producto?' : '¿Activar producto?'}"
                                             title="Cambiar estado">
                                         <i class="fa-solid fa-power-off"></i>
                                     </button>

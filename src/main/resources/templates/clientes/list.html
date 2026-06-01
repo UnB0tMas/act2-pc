@@ -38,7 +38,10 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         Buscar
                     </label>
-                    <input type="text" name="texto" th:value="${texto}" class="form-input"
+                    <input type="text"
+                           name="texto"
+                           th:value="${texto}"
+                           class="form-input"
                            placeholder="DNI, RUC, nombre, correo o razón social">
                 </div>
 
@@ -61,8 +64,8 @@
                     </label>
                     <select name="estado" class="form-input">
                         <option value="">Todos</option>
-                        <option value="1" th:selected="${estado == '1'}">Activo</option>
-                        <option value="0" th:selected="${estado == '0'}">Inactivo</option>
+                        <option value="1" th:selected="${estado == '1' or estado == 'A'}">Activo</option>
+                        <option value="0" th:selected="${estado == '0' or estado == 'I'}">Inactivo</option>
                     </select>
                 </div>
 
@@ -105,36 +108,69 @@
                         <th class="text-right">Acciones</th>
                     </tr>
                     </thead>
+
                     <tbody>
                     <tr th:each="cliente : ${pageResult.content}">
                         <td class="font-bold" th:text="${cliente.idCliente}">1</td>
+
                         <td>
                             <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700"
-                                  th:text="${cliente.tipoCliente}">PERSONA</span>
+                                  th:text="${cliente.tipoCliente}">
+                                PERSONA
+                            </span>
                         </td>
-                        <td class="font-semibold" th:text="${cliente.documento ?: 'Sin documento'}">00000000</td>
+
+                        <td class="font-semibold"
+                            th:text="${cliente.documento ?: 'Sin documento'}">
+                            00000000
+                        </td>
+
                         <td>
-                            <p class="font-bold text-slate-900" th:text="${cliente.displayName ?: 'Sin nombre'}">Cliente</p>
-                            <p class="text-xs text-slate-500" th:text="${cliente.tipoCliente == 'EMPRESA' ? 'Razón social' : 'Persona natural'}">Tipo</p>
+                            <p class="font-bold text-slate-900"
+                               th:text="${cliente.displayName ?: 'Sin nombre'}">
+                                Cliente
+                            </p>
+                            <p class="text-xs text-slate-500"
+                               th:text="${cliente.tipoCliente == 'EMPRESA' ? 'Razón social' : 'Persona natural'}">
+                                Tipo
+                            </p>
                         </td>
+
                         <td>
-                            <p class="text-sm" th:text="${cliente.correo ?: cliente.telefonoEmpresa ?: 'Sin contacto'}">correo</p>
-                            <p class="text-xs text-slate-500" th:text="${cliente.celular ?: ''}">celular</p>
+                            <p class="text-sm"
+                               th:text="${cliente.correo ?: cliente.telefonoEmpresa ?: 'Sin contacto'}">
+                                correo
+                            </p>
+                            <p class="text-xs text-slate-500"
+                               th:text="${cliente.celular ?: ''}">
+                                celular
+                            </p>
                         </td>
+
                         <td>
                             <span class="status-pill"
-                                  th:text="${T(com.upsjb.act2.util.EstadoUtil).etiqueta(cliente.estado)}">Activo</span>
+                                  th:text="${(cliente.estado == '1' or cliente.estado == 'A') ? 'Activo' : 'Inactivo'}">
+                                Activo
+                            </span>
                         </td>
+
                         <td>
                             <div class="flex justify-end gap-2">
-                                <a th:href="@{/clientes/{id}(id=${cliente.idCliente})}" class="icon-btn">
+                                <a th:href="@{/clientes/{id}(id=${cliente.idCliente})}"
+                                   class="icon-btn"
+                                   title="Ver">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
+
                                 <form th:action="@{/clientes/{id}/estado(id=${cliente.idCliente})}" method="post">
-                                    <input type="hidden" name="estado"
-                                           th:value="${T(com.upsjb.act2.util.EstadoUtil).esActivo(cliente.estado) ? '0' : '1'}">
-                                    <button type="submit" class="icon-btn js-confirm"
-                                            th:attr="data-confirm=${T(com.upsjb.act2.util.EstadoUtil).esActivo(cliente.estado) ? '¿Inactivar cliente?' : '¿Activar cliente?'}">
+                                    <input type="hidden"
+                                           name="estado"
+                                           th:value="${(cliente.estado == '1' or cliente.estado == 'A') ? '0' : '1'}">
+
+                                    <button type="submit"
+                                            class="icon-btn js-confirm"
+                                            th:attr="data-confirm=${(cliente.estado == '1' or cliente.estado == 'A') ? '¿Inactivar cliente?' : '¿Activar cliente?'}"
+                                            title="Cambiar estado">
                                         <i class="fa-solid fa-power-off"></i>
                                     </button>
                                 </form>

@@ -28,39 +28,58 @@
         <section class="panel mb-6">
             <form th:action="@{/empleados}" method="get" class="grid gap-4 lg:grid-cols-6">
                 <div class="lg:col-span-2">
-                    <label class="form-label"><i class="fa-solid fa-magnifying-glass"></i>Buscar</label>
-                    <input type="text" name="texto" th:value="${texto}" class="form-input"
+                    <label class="form-label">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Buscar
+                    </label>
+                    <input type="text"
+                           name="texto"
+                           th:value="${texto}"
+                           class="form-input"
                            placeholder="DNI, nombres, correo">
                 </div>
 
                 <div>
-                    <label class="form-label"><i class="fa-solid fa-briefcase"></i>Cargo</label>
+                    <label class="form-label">
+                        <i class="fa-solid fa-briefcase"></i>
+                        Cargo
+                    </label>
                     <select name="idCargo" class="form-input">
                         <option value="">Todos</option>
                         <option th:each="cargo : ${cargos}"
                                 th:value="${cargo.idCargo}"
                                 th:text="${cargo.nomCargo}"
-                                th:selected="${idCargo != null and idCargo == cargo.idCargo}">Cargo</option>
+                                th:selected="${idCargo != null and idCargo == cargo.idCargo}">
+                            Cargo
+                        </option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="form-label"><i class="fa-solid fa-file-contract"></i>Contrato</label>
+                    <label class="form-label">
+                        <i class="fa-solid fa-file-contract"></i>
+                        Contrato
+                    </label>
                     <select name="idContrato" class="form-input">
                         <option value="">Todos</option>
                         <option th:each="contrato : ${contratos}"
                                 th:value="${contrato.idContrato}"
                                 th:text="${contrato.nomContrato}"
-                                th:selected="${idContrato != null and idContrato == contrato.idContrato}">Contrato</option>
+                                th:selected="${idContrato != null and idContrato == contrato.idContrato}">
+                            Contrato
+                        </option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="form-label"><i class="fa-solid fa-toggle-on"></i>Estado</label>
+                    <label class="form-label">
+                        <i class="fa-solid fa-toggle-on"></i>
+                        Estado
+                    </label>
                     <select name="estado" class="form-input">
                         <option value="">Todos</option>
-                        <option value="1" th:selected="${estado == '1'}">Activo</option>
-                        <option value="0" th:selected="${estado == '0'}">Inactivo</option>
+                        <option value="1" th:selected="${estado == '1' or estado == 'A'}">Activo</option>
+                        <option value="0" th:selected="${estado == '0' or estado == 'I'}">Inactivo</option>
                     </select>
                 </div>
 
@@ -102,33 +121,63 @@
                         <th class="text-right">Acciones</th>
                     </tr>
                     </thead>
+
                     <tbody>
                     <tr th:each="empleado : ${pageResult.content}">
                         <td class="font-bold" th:text="${empleado.idEmpleado}">1</td>
+
                         <td th:text="${empleado.dni ?: '-'}">DNI</td>
+
                         <td>
-                            <p class="font-bold text-slate-900" th:text="${empleado.nombreCompleto ?: 'Sin nombre'}">Empleado</p>
-                            <p class="text-xs text-slate-500" th:text="${empleado.correo ?: empleado.celular ?: 'Sin contacto'}">Contacto</p>
+                            <p class="font-bold text-slate-900"
+                               th:text="${empleado.nombreCompleto ?: 'Sin nombre'}">
+                                Empleado
+                            </p>
+                            <p class="text-xs text-slate-500"
+                               th:text="${empleado.correo ?: empleado.celular ?: 'Sin contacto'}">
+                                Contacto
+                            </p>
                         </td>
+
                         <td th:text="${empleado.nomCargo ?: '-'}">Cargo</td>
+
                         <td th:text="${empleado.nomContrato ?: '-'}">Contrato</td>
-                        <td class="font-bold" th:text="${'S/ ' + #numbers.formatDecimal(empleado.salario ?: 0, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
-                        <td>
-                            <span class="status-pill" th:text="${T(com.upsjb.act2.util.EstadoUtil).etiqueta(empleado.estado)}">Activo</span>
+
+                        <td class="font-bold"
+                            th:text="${'S/ ' + #numbers.formatDecimal(empleado.salario ?: 0, 1, 'COMMA', 2, 'POINT')}">
+                            S/ 0.00
                         </td>
+
+                        <td>
+                            <span class="status-pill"
+                                  th:text="${(empleado.estado == '1' or empleado.estado == 'A') ? 'Activo' : 'Inactivo'}">
+                                Activo
+                            </span>
+                        </td>
+
                         <td>
                             <div class="flex justify-end gap-2">
-                                <a th:href="@{/empleados/{id}(id=${empleado.idEmpleado})}" class="icon-btn">
+                                <a th:href="@{/empleados/{id}(id=${empleado.idEmpleado})}"
+                                   class="icon-btn"
+                                   title="Ver">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a th:href="@{/empleados/{id}/editar(id=${empleado.idEmpleado})}" class="icon-btn">
+
+                                <a th:href="@{/empleados/{id}/editar(id=${empleado.idEmpleado})}"
+                                   class="icon-btn"
+                                   title="Editar">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
+
                                 <form th:action="@{/empleados/{id}/estado(id=${empleado.idEmpleado})}" method="post">
-                                    <input type="hidden" name="estado"
-                                           th:value="${T(com.upsjb.act2.util.EstadoUtil).esActivo(empleado.estado) ? '0' : '1'}">
-                                    <button type="submit" class="icon-btn js-confirm"
-                                            th:attr="data-confirm=${T(com.upsjb.act2.util.EstadoUtil).esActivo(empleado.estado) ? '¿Inactivar empleado?' : '¿Activar empleado?'}">
+                                    <input type="hidden"
+                                           name="estado"
+                                           th:value="${(empleado.estado == '1' or empleado.estado == 'A') ? '0' : '1'}">
+
+                                    <button type="submit"
+                                            class="icon-btn js-confirm"
+                                            th:attr="data-confirm=${(empleado.estado == '1' or empleado.estado == 'A') ? '¿Inactivar empleado?' : '¿Activar empleado?'}"
+                                            title="Cambiar estado">
                                         <i class="fa-solid fa-power-off"></i>
                                     </button>
                                 </form>
